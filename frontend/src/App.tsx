@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
-
 import Home from "./Home/Home";
 import Products from "./Products/Products";
-
-// Lab Order Feature components (table + detail page)
 import Orders from "./Orders/orders";
 import OrderDetail from "./Orders/OrderDetail";
+import PaymentScreen from "./Payment/Payment";
 
 type Product = {
   id: number;
@@ -59,6 +57,7 @@ function App() {
             <Link to="/">Home</Link>
             <Link to="/catalog">Catalog</Link>
             <Link to="/orders">Orders</Link>
+            <Link to="/payment">Payment</Link>
           </div>
         </header>
 
@@ -85,6 +84,7 @@ function App() {
             <Route path="/catalog" element={<Products/>} />
             <Route path="orders" element={<Orders />}></Route>
             <Route path="/order/:id" element={<OrderDetail />}></Route>
+            <Route path="/payment" element={<PaymentScreen />} />
           </Routes>
         </main>
 
