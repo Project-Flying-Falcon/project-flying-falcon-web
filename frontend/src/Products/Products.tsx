@@ -1,8 +1,5 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
-
-
 
 type Product = {
     id: number;
@@ -15,29 +12,39 @@ type Product = {
     imageUrl: string;
 }
 
-const emptyProducts: Product [] = [];
-
+const emptyProducts: Product[] = [];
 
 function Products() {
-  return (
-    <div className="content">
-      <ul className="products"></ul>
-    </div>
-  );
+    const [products, setProducts]: [Product[], (products: Product[]) => void] = useState(emptyProducts);
 
-const [products, setProducts]: [Product[], (products: Product[]) => void] = useState(emptyProducts);
+    useEffect(() => {
+        axios.get<Product[]>("http://localhost:5022/catalog",
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response: any) => setProducts(response.data))
+            .catch((error: any) => console.log(error));
+    }, []);
 
-  useEffect(()=> {
-    axios.get<Product[]>("http://localhost:5500/catalog", 
-        {
-            headers: {
-                "Content-Type":"application/json",
-            },
-        })
-        .then((response)=>setProducts(response.data))
-        .catch((error) => console.log(error));
-        }, []);
-
+    return (
+        <div className="content">
+            <ul className="products">
+                {products.map((product) => (
+                    <li key={product.id}>
+                        <div className="product">
+                            <img
+                                className="product-image"
+                                src={product.imageUrl}
+                                alt="product"
+                            />
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 }
 
 export default Products;
